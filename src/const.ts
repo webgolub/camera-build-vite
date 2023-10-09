@@ -33,3 +33,5 @@ export enum ProductLevel {
   Amateur = 'Любительский',
   Professional = 'Профессиональный'
 }
+
+export const RATING_MAX_STARS = 5;
