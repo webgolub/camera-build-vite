@@ -1,6 +1,30 @@
 import { Helmet } from 'react-helmet-async';
+import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
+import { fetchAllProductsAction } from '../../store/api-action';
+import LoadingPage from '../loading-page/loading-page';
+import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
+import { useEffect } from 'react';
 
 function CatalogPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const allProducts = useAppSelector((store) => store.allProducts);
+  const isAllProductsDataLoading = useAppSelector((store) => store.AllProductsDataLoadingStatus);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted) {
+      dispatch(fetchAllProductsAction());
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [dispatch]);
+
+  if (isAllProductsDataLoading) {
+    return <LoadingPage />;
+  }
 
   return (
     <>
