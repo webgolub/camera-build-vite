@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Product } from '../../../types/product';
 import CardRating from './cart-rating/card-rating';
+import { AppRoute } from '../../../const';
 
 type CatalogCardProps = {
   product: Product;
@@ -17,6 +18,7 @@ function CatalogCard(
     rating,
     reviewCount,
     price,
+    id
   }}: CatalogCardProps): JSX.Element {
 
   return(
@@ -34,7 +36,7 @@ function CatalogCard(
       </div>
       <div className="product-card__buttons">
         <button className="btn btn--purple product-card__btn" type="button">Купить</button>
-        <Link className="btn btn--transparent" to="#">Подробнее</Link>
+        <Link className="btn btn--transparent" to={`${AppRoute.Catalog}/${id}`}>Подробнее</Link>
       </div>
     </div>
   );

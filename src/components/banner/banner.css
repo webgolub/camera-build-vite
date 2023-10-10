@@ -1,0 +1,14 @@
+.swiper {
+  height: 280px;
+}
+
+.swiper-pagination-bullets {
+  text-align: right;
+  padding-right: 40px;
+}
+
+.swiper-pagination-bullet {
+  width: 16px;
+  height: 16px;
+  background: #7575E2;
+}
