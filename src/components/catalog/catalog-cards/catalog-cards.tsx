@@ -1,8 +1,11 @@
-import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector';
+import { Products } from '../../../types/product';
 import CatalogCard from '../catalog-card/catalog-card';
 
-function CatalogCards(): JSX.Element {
-  const products = useAppSelector((state) => state.allProducts);
+type CatalogCardsProps = {
+  products: Products;
+}
+
+function CatalogCards({products}: CatalogCardsProps): JSX.Element {
 
   return(
     <div className="cards catalog__cards">

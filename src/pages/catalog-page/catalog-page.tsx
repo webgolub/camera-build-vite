@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
-import { fetchAllProductsAction, fetchAllPromoAction } from '../../store/api-action';
+import { fetchAllProductsAction } from '../../store/api-action';
 import LoadingPage from '../loading-page/loading-page';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { useEffect } from 'react';
@@ -16,14 +16,13 @@ function CatalogPage(): JSX.Element {
     let isMounted = true;
 
     if (isMounted) {
-      dispatch(fetchAllPromoAction());
       dispatch(fetchAllProductsAction());
     }
 
     return () => {
       isMounted = false;
     };
-  }, [dispatch]);
+  },[dispatch]);
 
   if (isAllProductsDataLoading) {
     return <LoadingPage />;

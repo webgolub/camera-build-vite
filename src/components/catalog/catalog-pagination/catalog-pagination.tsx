@@ -1,16 +1,38 @@
-function CatalogPagination(): JSX.Element {
+import classNames from 'classnames';
+import { Link } from 'react-router-dom';
+
+type CatalogPaginationProps = {
+  pagesCount: number;
+  activePage: number;
+}
+
+function CatalogPagination({pagesCount, activePage}: CatalogPaginationProps): JSX.Element {
 
   return(
     <div className="pagination">
       <ul className="pagination__list">
-        <li className="pagination__item"><a className="pagination__link pagination__link--active" href="1">1</a>
-        </li>
-        <li className="pagination__item"><a className="pagination__link" href="2">2</a>
-        </li>
-        <li className="pagination__item"><a className="pagination__link" href="3">3</a>
-        </li>
-        <li className="pagination__item"><a className="pagination__link pagination__link--text" href="2">Далее</a>
-        </li>
+        {
+          Array.from({length: pagesCount}, () => crypto.randomUUID()).map((value, index) => {
+            const pageNumber = index + 1;
+
+            return(
+
+              <li className="pagination__item" key={value}>
+                <Link
+                  className={classNames({
+                    'pagination__link': true,
+                    'pagination__link--active': pageNumber === activePage
+                  })}
+                  to={pageNumber === 1
+                    ? '/catalog'
+                    : `/catalog?page=${pageNumber}`}
+                >
+                  {pageNumber}
+                </Link>
+              </li>
+            );
+          })
+        }
       </ul>
     </div>
   );

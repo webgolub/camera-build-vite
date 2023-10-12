@@ -11,7 +11,7 @@ export const fetchAllProductsAction = createAsyncThunk<void, undefined, {
   state: State;
   extra: AxiosInstance;
  }>(
-   'quests/fetchAllQuests',
+   'quests/fetchAllProducts',
    async (_arg, {dispatch, extra: api}) => {
      const {data} = await api.get<Products>(APIRoute.Cameras);
      dispatch(loadAllProducts(data));
@@ -23,7 +23,7 @@ export const fetchAllPromoAction = createAsyncThunk<void, undefined, {
   state: State;
   extra: AxiosInstance;
  }>(
-   'quests/fetchAllQuests',
+   'quests/fetchAllPromos',
    async (_arg, {dispatch, extra: api}) => {
      const {data} = await api.get<Promos>(APIRoute.Promo);
      dispatch(loadAllPromos(data));

@@ -7,13 +7,33 @@ import './banner.css';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
+import { fetchAllPromoAction } from '../../store/api-action';
 
-
-function Banner(): JSX.Element {
+function Banner(): JSX.Element | null {
   const allPromos = useAppSelector((store) => store.allPromos);
+  const isPromoExist = allPromos.length > 0;
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted && !isPromoExist) {
+      dispatch(fetchAllPromoAction());
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  },[isPromoExist, dispatch]);
+
+  if (!isPromoExist) {
+    return null;
+  }
 
   return(
-
     <div className="banner">
       <Swiper
         modules={[Pagination, Autoplay]}
@@ -40,6 +60,7 @@ function Banner(): JSX.Element {
       </Swiper>
     </div>
   );
+
 }
 
 export default Banner;
