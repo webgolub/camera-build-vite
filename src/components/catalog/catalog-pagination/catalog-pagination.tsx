@@ -1,37 +1,64 @@
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { PAGINATION_MAX_PAGES_RENDERED } from '../../../const';
+import { useState } from 'react';
 
 type CatalogPaginationProps = {
-  pagesCount: number;
-  activePage: number;
+  buttonsCount: number;
+  activeButton: number;
 }
 
-function CatalogPagination({pagesCount, activePage}: CatalogPaginationProps): JSX.Element {
+function CatalogPagination({buttonsCount, activeButton}: CatalogPaginationProps): JSX.Element {
+  const navigate = useNavigate();
+  const allButtons = Array.from({length: buttonsCount}, (_, index) => ({ id: crypto.randomUUID(), buttonNumber: index + 1}));
+  const [startButtonToRender, setStartButtonToRender] = useState(0);
+  const [finishButtonToRender, setFinishButtonToRender] = useState(PAGINATION_MAX_PAGES_RENDERED);
+  const isPagesMoreThanMax = allButtons.length > PAGINATION_MAX_PAGES_RENDERED;
+  const isAllPagesRendered = finishButtonToRender < allButtons.length;
+  const forwardButtonClickHandler = () => {
+    setStartButtonToRender(finishButtonToRender);
+    setFinishButtonToRender((prevState) => prevState + PAGINATION_MAX_PAGES_RENDERED);
+    navigate(`/catalog?page=${allButtons[finishButtonToRender].buttonNumber}`);
+  };
+  const backButtonClickHandler = () => {
+    setStartButtonToRender((prevState) => prevState - PAGINATION_MAX_PAGES_RENDERED);
+    setFinishButtonToRender(startButtonToRender);
+    navigate(`/catalog?page=${(allButtons[startButtonToRender].buttonNumber) - 1}`);
+  };
 
   return(
     <div className="pagination">
       <ul className="pagination__list">
         {
-          Array.from({length: pagesCount}, () => crypto.randomUUID()).map((value, index) => {
-            const pageNumber = index + 1;
+          startButtonToRender > 0 &&
+          (
+            <li className="pagination__item">
+              <button className=" btn pagination__link pagination__link--text" onClick={backButtonClickHandler}>Назад
+              </button>
+            </li>
+          )
+        }{
+          allButtons.slice(startButtonToRender, finishButtonToRender).map((button) => (
 
-            return(
-
-              <li className="pagination__item" key={value}>
-                <Link
-                  className={classNames({
-                    'pagination__link': true,
-                    'pagination__link--active': pageNumber === activePage
-                  })}
-                  to={pageNumber === 1
-                    ? '/catalog'
-                    : `/catalog?page=${pageNumber}`}
-                >
-                  {pageNumber}
-                </Link>
-              </li>
-            );
-          })
+            <li className="pagination__item" key={button.id}>
+              <Link
+                className={classNames({
+                  'pagination__link': true,
+                  'pagination__link--active': button.buttonNumber === activeButton
+                })}
+                to={button.buttonNumber === 1
+                  ? '/catalog'
+                  : `/catalog?page=${button.buttonNumber}`}
+              >
+                {button.buttonNumber}
+              </Link>
+            </li>
+          ))
+        }{
+          (isAllPagesRendered && isPagesMoreThanMax) &&
+          <li className="pagination__item">
+            <button className=" btn pagination__link pagination__link--text" onClick={forwardButtonClickHandler}>Далее</button>
+          </li>
         }
       </ul>
     </div>

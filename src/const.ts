@@ -37,3 +37,4 @@ export enum ProductLevel {
 
 export const RATING_MAX_STARS = 5;
 export const PRODUCTS_PER_PAGE = 9;
+export const PAGINATION_MAX_PAGES_RENDERED = 3;

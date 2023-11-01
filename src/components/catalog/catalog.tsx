@@ -8,7 +8,7 @@ import CatalogSort from './catalog-sort/catalog-sort';
 import { useSearchParams } from 'react-router-dom';
 
 function Catalog(): JSX.Element {
-  const products = (useAppSelector((state) => state.allProducts));
+  const products = useAppSelector((state) => state.allProducts);
   const productsCount = products.length;
   const [productsToRender, setProductsToRender] = useState(products.slice(0, PRODUCTS_PER_PAGE));
   const paginationPagesCount = Math.ceil(productsCount / PRODUCTS_PER_PAGE);
@@ -18,7 +18,7 @@ function Catalog(): JSX.Element {
   useEffect(() => {
     const startIndex = (PRODUCTS_PER_PAGE * (pageNumber - 1));
     setProductsToRender(products.slice(startIndex, startIndex + PRODUCTS_PER_PAGE));
-  }, [pageNumber, products, searchParams, setSearchParams]);
+  }, [pageNumber, searchParams, products, setSearchParams]);
 
   return(
     <section className="catalog">
@@ -36,8 +36,8 @@ function Catalog(): JSX.Element {
             {
               (productsCount > PRODUCTS_PER_PAGE) &&
               <CatalogPagination
-                pagesCount={paginationPagesCount}
-                activePage={pageNumber}
+                buttonsCount={paginationPagesCount}
+                activeButton={pageNumber}
               />
             }
           </div>
