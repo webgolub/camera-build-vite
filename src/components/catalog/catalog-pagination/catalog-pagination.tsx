@@ -13,8 +13,7 @@ function CatalogPagination({buttonsCount, activeButton}: CatalogPaginationProps)
   const allButtons = Array.from({length: buttonsCount}, (_, index) => ({ id: crypto.randomUUID(), buttonNumber: index + 1}));
   const [startButtonToRender, setStartButtonToRender] = useState(0);
   const [finishButtonToRender, setFinishButtonToRender] = useState(PAGINATION_MAX_PAGES_RENDERED);
-  const isPagesMoreThanMax = allButtons.length > PAGINATION_MAX_PAGES_RENDERED;
-  const isAllPagesRendered = finishButtonToRender < allButtons.length;
+  const isNotAllPagesRendered = finishButtonToRender < allButtons.length;
   const forwardButtonClickHandler = () => {
     setStartButtonToRender(finishButtonToRender);
     setFinishButtonToRender((prevState) => prevState + PAGINATION_MAX_PAGES_RENDERED);
@@ -55,7 +54,7 @@ function CatalogPagination({buttonsCount, activeButton}: CatalogPaginationProps)
             </li>
           ))
         }{
-          (isAllPagesRendered && isPagesMoreThanMax) &&
+          (isNotAllPagesRendered) &&
           <li className="pagination__item">
             <button className=" btn pagination__link pagination__link--text" onClick={forwardButtonClickHandler}>Далее</button>
           </li>
